@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+  <ItemGroup Condition="'$(BuildRpmPackage)' == 'true'">
+    <InstallerProjectReference Include="installers/netstandard2.1.proj" />
+  </ItemGroup>
+
+  <Target Name="BuildInstallerProjects" BeforeTargets="Build">
+    <MSBuild Projects="@(InstallerProjectReference)"
+             Targets="Restore;GenerateInstallers"
+             SkipNonexistentTargets="true" />
+  </Target>
+</Project>

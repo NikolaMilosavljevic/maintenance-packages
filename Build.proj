@@ -1,8 +1,13 @@
 <Project Sdk="Microsoft.Build.Traversal">
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(BuildInstallers)' != 'true'">
     <ProjectReference Include="src/**/*.csproj" />
     <ProjectReference Condition="'$(SkipTests)' == 'true'" Remove="src/*/tests/*.csproj" />
+    <ProjectReference Include="src/installer/**/*.proj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(BuildInstallers)' == 'true'">
+    <ProjectReference Include="src/installer/installers.proj" />
   </ItemGroup>
 
 </Project>

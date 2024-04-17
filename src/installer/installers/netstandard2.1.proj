@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+  <PropertyGroup>
+    <VersionPrefix>2.1.1</VersionPrefix>
+    <GenerateInstallers>true</GenerateInstallers>
+    <InstallerName>netstandard-targeting-pack-2.1</InstallerName>
+    <PackageBrandNameSuffix>NETStandard.Library.Ref</PackageBrandNameSuffix>
+    <ProductBrandName>NETStandard.Library.Ref 2.1.0</ProductBrandName>
+    <VersionInstallerName>false</VersionInstallerName>
+    <PlatformPackageType>ToolPack</PlatformPackageType>
+    <UseBrandingNameInLinuxPackageDescription>true</UseBrandingNameInLinuxPackageDescription>
+    <OriginalNetstandard21PkgFilename>netstandard-targeting-pack-2.1.0-x64.rpm</OriginalNetstandard21PkgFilename>
+    <Netstandard21PkgDownloadUrl>https://dotnetcli.blob.core.windows.net/dotnet/Runtime/3.1.0/$(OriginalNetstandard21PkgFilename)</Netstandard21PkgDownloadUrl>
+    <Netstandard21TempDir>$([MSBuild]::NormalizeDirectory('$(BaseIntermediateOutputPath)', 'download'))</Netstandard21TempDir>
+    <Netstandard21PkgDestinationPath>$(Netstandard21TempDir)$(OriginalNetstandard21PkgFilename)</Netstandard21PkgDestinationPath>
+    <Netstandard21PkgDownloadSemaphore>$(Netstandard21TempDir)netstandard.semaphore</Netstandard21PkgDownloadSemaphore>
+  </PropertyGroup>
+
+  <UsingTask TaskName="DownloadFile" AssemblyFile="$(ArcadeSdkBuildTasksAssembly)" />
+
+  <Target Name="AcquireNetstandard21PackageContents"
+          Inputs="$(Netstandard21PkgDestinationPath)"
+          Outputs="$(Netstandard21PkgDownloadSemaphore)">
+
+    <RemoveDir Directories="$(Netstandard21TempDir)" />
+
+    <DownloadFile
+      Uri="$(Netstandard21PkgDownloadUrl)"
+      DestinationPath="$(Netstandard21PkgDestinationPath)"
+      Overwrite="true"
+      TimeoutInSeconds="9999" />
+
+    <Exec Command="rpm2cpio $(Netstandard21PkgDestinationPath) | cpio -idmv"
+          WorkingDirectory="$(Netstandard21TempDir)" />
+
+    <WriteLinesToFile
+      File="$(Netstandard21PkgDownloadSemaphore)"
+      Lines="$(Netstandard21PkgDownloadUrl)"
+      Overwrite="true"
+      Encoding="Unicode" />
+
+  </Target>
+
+  <Target Name="PublishToDisk"
+          DependsOnTargets="AcquireNetstandard21PackageContents">
+    <Error Condition="'$(OutputPath)' == ''" Text="Publishing to disk requires the OutputPath to be set to the root of the path to write to." />
+
+    <ItemGroup>
+      <Content Include="$(Netstandard21TempDir)usr/share/dotnet/**/*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(Content)"
+          DestinationFolder="$(OutputPath)/%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="AddLinuxPackageInformation" BeforeTargets="GetRpmInstallerJsonProperties">
+    <ItemGroup>
+      <RpmJsonProperty Include="directories" Object="[ &quot;/usr/share/dotnet/packs/NETStandard.Library.Ref/2.1.0&quot;, &quot;/usr/share/doc/netstandard-targeting-pack-2.1&quot; ]" />
+    </ItemGroup>
+  </Target>
+</Project>

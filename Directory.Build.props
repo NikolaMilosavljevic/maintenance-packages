@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <Copyright>$(CopyrightNetFoundation)</Copyright>
+    <LicenseFile>$(MSBuildThisFileDirectory)LICENSE</LicenseFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <DebugType>embedded</DebugType>

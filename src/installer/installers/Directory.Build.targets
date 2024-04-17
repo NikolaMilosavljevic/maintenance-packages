@@ -1,0 +1,7 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Build.Tasks.Installers" />
+  </ItemGroup>
+  
+  <Import Project="..\Directory.Build.targets" />
+</Project>

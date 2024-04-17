@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <EnsureRuntimeIdentifierSet>true</EnsureRuntimeIdentifierSet>
+  </PropertyGroup>
+
+  <Import Project="..\..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <Platform Condition="'$(Platform)' == ''">$(TargetArchitecture)</Platform>
+    <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants),DEBUG,TRACE</DefineConstants>
+    <DefineConstants Condition="'$(Configuration)' == 'Release'">$(DefineConstants),TRACE</DefineConstants>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(EnsureRuntimeIdentifierSet)' == 'true'">$(OutputRID)</RuntimeIdentifier>
+    <TargetFramework>net8.0</TargetFramework>
+    <InstallerRuntimeIdentifiers>$(TargetOS)-$(TargetArchitecture)</InstallerRuntimeIdentifiers>
+    <ProductBrandPrefix>Microsoft .NET</ProductBrandPrefix>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <UseRuntimePackageDisclaimer>true</UseRuntimePackageDisclaimer>
+    <GenerateInstallers>true</GenerateInstallers>
+    <GenerateVSInsertionPackages>true</GenerateVSInsertionPackages>
+  </PropertyGroup>
+</Project>
