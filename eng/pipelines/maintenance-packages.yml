@@ -90,8 +90,6 @@ extends:
             displayName: 'Build Linux'
             timeoutInMinutes: 60
             container: LinuxContainer
-            pool:
-              vmImage: $(LinuxImage)
             strategy:
               matrix:
                 debug:
@@ -111,8 +109,6 @@ extends:
             displayName: 'Pack Linux'
             timeoutInMinutes: 60
             container: LinuxContainer
-            pool:
-              vmImage: $(LinuxImage)
             strategy:
               matrix:
                 release:
@@ -134,8 +130,6 @@ extends:
             displayName: 'Build Linux Installers'
             timeoutInMinutes: 60
             container: LinuxContainer
-            pool:
-              vmImage: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-fpm
             strategy:
               matrix:
                 release:
