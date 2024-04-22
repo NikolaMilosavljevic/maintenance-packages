@@ -91,7 +91,9 @@ extends:
             timeoutInMinutes: 60
             container: LinuxContainer
             pool:
-              vmImage: ubuntu-latest
+              name: $(DncEngInternalBuildPool)
+              image: 1es-ubuntu-2204
+              os: linux
             strategy:
               matrix:
                 debug:
@@ -112,7 +114,9 @@ extends:
             timeoutInMinutes: 60
             container: LinuxContainer
             pool:
-              vmImage: ubuntu-latest
+              name: $(DncEngInternalBuildPool)
+              image: 1es-ubuntu-2204
+              os: linux
             strategy:
               matrix:
                 release:
@@ -135,7 +139,9 @@ extends:
             timeoutInMinutes: 60
             container: LinuxContainer
             pool:
-              vmImage: ubuntu-latest
+              name: $(DncEngInternalBuildPool)
+              image: 1es-ubuntu-2204
+              os: linux
             strategy:
               matrix:
                 release:
