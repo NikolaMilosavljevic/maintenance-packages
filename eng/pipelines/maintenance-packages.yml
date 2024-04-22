@@ -94,64 +94,18 @@ extends:
               name: $(DncEngInternalBuildPool)
               image: 1es-ubuntu-2204
               os: linux
-            strategy:
-              matrix:
-                debug:
-                  _BuildConfig: Release
             preSteps:
             - checkout: self
               clean: true
             steps:
             - script: eng/common/cibuild.sh
-                --configuration $(_BuildConfig)
+                --configuration Release
                 --prepareMachine
                 $(_AdditionalBuildArgs)
                 $(_InternalBuildArgs)
-              displayName: $(_BuildJobDisplayName)
-
-          - job: pack_linux
-            displayName: 'Pack Linux'
-            timeoutInMinutes: 60
-            container: LinuxContainer
-            pool:
-              name: $(DncEngInternalBuildPool)
-              image: 1es-ubuntu-2204
-              os: linux
-            strategy:
-              matrix:
-                release:
-                  _BuildConfig: Release
-            preSteps:
-            - checkout: self
-              clean: true
-            steps:
+              displayName: 'Build'
             - script: eng/common/cibuild.sh
-                --configuration $(_BuildConfig)
-                --prepareMachine
-                /p:SkipTests=true
-                /p:IsPackable=true
-                $(_AdditionalBuildArgs)
-                $(_InternalBuildArgs)
-              displayName: 'Build and pack'
-
-          - job: build_linux_installers
-            displayName: 'Build Linux Installers'
-            timeoutInMinutes: 60
-            container: LinuxContainer
-            pool:
-              name: $(DncEngInternalBuildPool)
-              image: 1es-ubuntu-2204
-              os: linux
-            strategy:
-              matrix:
-                release:
-                  _BuildConfig: Release
-            preSteps:
-            - checkout: self
-              clean: true
-            steps:
-            - script: eng/common/cibuild.sh
-                --configuration $(_BuildConfig)
+                --configuration Release
                 --prepareMachine
                 /p:BuildInstallers=true
                 /p:BuildRpmPackage=true
