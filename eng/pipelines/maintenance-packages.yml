@@ -90,6 +90,8 @@ extends:
             displayName: 'Build Linux'
             timeoutInMinutes: 60
             container: LinuxContainer
+            pool:
+              vmImage: ubuntu-latest
             strategy:
               matrix:
                 debug:
@@ -109,6 +111,8 @@ extends:
             displayName: 'Pack Linux'
             timeoutInMinutes: 60
             container: LinuxContainer
+            pool:
+              vmImage: ubuntu-latest
             strategy:
               matrix:
                 release:
@@ -130,6 +134,8 @@ extends:
             displayName: 'Build Linux Installers'
             timeoutInMinutes: 60
             container: LinuxContainer
+            pool:
+              vmImage: ubuntu-latest
             strategy:
               matrix:
                 release:
